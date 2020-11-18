@@ -49,6 +49,36 @@ public class Movie implements Comparable<Movie> {
         return title + " " + available + " " + rented;
     }
 
+    public void add(int numAdd) {
+        available = available + numAdd;
+    }
+    
+    public void remove(int numRemove)
+	{
+		if(numRemove > available)
+		{
+			numRemove = numRemove - available;
+			available = 0;
+			rented = rented - numRemove;
+		}
+		else
+		{
+			available = available - numRemove;
+		}
+	}
+	
+	public void rent()
+	{
+		available--;
+		rented++;
+	}
+	
+	public void ret()
+    {
+        available++;
+        rented--;
+    }
+    
 	@Override
 	public int compareTo(Movie o) {
 		// TODO Auto-generated method stub

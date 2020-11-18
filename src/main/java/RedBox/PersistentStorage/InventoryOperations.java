@@ -16,11 +16,11 @@ public class InventoryOperations {
         Scanner s = new Scanner(inventory);
         String line;
         String[] split;
-        while (s.hasNextLine()) {
+        /* while (s.hasNextLine()) {
             line = s.nextLine();
             split = line.split(",");
             item.insert(new Movie(split[0], Integer.parseInt(split[1]), Integer.parseInt(split[2])));
-        }
+        } */
         return item;
     }
 }

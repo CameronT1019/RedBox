@@ -2,89 +2,41 @@ package RedBox.BSTree;
     
 public class BinaryTree<T extends Comparable<T>> {
     
-    TreeNode<T> root;
+    // Declare the root node
+	private Node<T> root;
 	
-	public BinaryTree() {
-		super();
-		this.root = new TreeNode<T>();
-	}
- 
-	public BinaryTree(T o) {
-		super();
-		TreeNode<T> node = new TreeNode<T>(o);
-		this.root = node;
+	
+	public void insert(T data)
+	{
+		root = insert(root, data);
 	}
 	
-    public void insert(T o) {
-        if (root == null) {
-            root = new TreeNode<T>(o);
-            return;
-        }
-        insertHelper(root, o);
-    }
-    
-    private void insertHelper(T x, T y) {
-        if (x.compareTo(y) > 0) {
-            if (x.getLeft() == null) [
-                
-            ]
-        }
-    }
-	
-	public boolean isMember (TreeNode<T> node, T o) {
-		if(node == null) return false;
-		
-		if (node.element.compareTo(o) == 0) {
-			return true;
-		} else if (node.element.compareTo(o) < 0) {
-			isMember(node.right, o);
-		} else {
-			isMember(node.left, o);
+	// We go to the appropriate node to insert our new node 
+	private Node<T> insert(Node<T> root, T data)
+	{
+		if (root == null)
+		{
+			return new Node<>(data);
 		}
-		return false;
+		else if (data.compareTo(root.data)< 0)
+		{
+			root.left = insert(root.left, data);
+		}
+		else if (data.compareTo(root.data) > 0)
+		{
+			root.right = insert(root.right, data);
+		}
+		else
+		{
+			// Stylistically, I have this here to explicitly state that we are
+			// disallowing insertion of duplicate values. This is unconventional
+			// and a bit cheeky.
+			;
+		}
+
+		return root;
 	}
 	
-	public void preOrderHelper (TreeNode<T> node) {
-		if (node != null) {
-			node.visit();
-			preOrderHelper(node.left);
-			preOrderHelper(node.right);
-		}
-	}
-	
-	public void inOrderHelper(TreeNode<T> node) {
-		if (node != null) {
-			inOrderHelper(node.left);
-			node.visit();
-			inOrderHelper(node.right);
-		}
-	}
-	
-	public void postOrderHelper(TreeNode<T> node) {
-		if (node != null) {
-			postOrderHelper(node.left);
-			postOrderHelper(node.right);
-			node.visit();
-		}
-	}
-	
-	public void preOrder() {
-		if (root != null) {
-			preOrderHelper(root);
-		}
-	}
-	
-	public void inOrder() {
-		if (root != null) {
-			inOrderHelper(root);
-		}
-	}
-	
-	public void postOrder() {
-		if (root != null) {
-			postOrderHelper(root);
-		}
-	}
 	
 }
 
