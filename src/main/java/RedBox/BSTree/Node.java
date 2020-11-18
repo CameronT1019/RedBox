@@ -6,8 +6,12 @@ public class Node<T extends Comparable<T>>{
 	T data;
 	Node<T> left, right;
 
-	Node(T data)
-	{
+    Node() {
+        left = right = null;
+    }
+    Node(T data)
+    {
+        left = right = null;
 		this.data = data;
 	}
 
