@@ -16,81 +16,71 @@ public class BinaryTree<T extends Comparable<T>> {
 	{
 		if (p == null)
 			return new Node<T>(data);
-		
-		if (data.compareTo(p.data) == 0) 
+
+		if (data.compareTo(p.data) == 0)
 			return p;
-		
+
 		if (data.compareTo(p.data) < 0)
 			p.left = insert(p.left, data);
 		else
 			p.right = insert(p.right, data);
-		
+
 		return p;
 	}
 	
-	public void delete(T data)
-	{
-		root = delete(root, data);
-	}
-	// We need to iterate to the right node to be deleted
-	private Node<T> delete(Node<T> root, T data)
-	{
-		if (root == null) {
-			return null;
-		} else if (data.compareTo(root.data) < 0) {
-			root.left = delete(root.left, data);
-		} else if (data.compareTo(root.data) > 0) {
-			root.right = delete(root.right, data);
-		} else {
-			if (root.left == null && root.right == null) {
-				return null;
-			} else if (root.right == null) {
-				return root.left;
-			} else if (root.left == null) {
-				return root.right;
-			} else {
-				root.data = findMax(root.left);
-				root.left = delete(root.left, root.data);
-			}
-		}
-
-		return root;
-	}
+	public boolean search(T toSearch)
+    {
+      return search(root, toSearch);
+    }
+   private boolean search(Node<T> p, T toSearch)
+    {
+      if (p == null)
+         return false;
+      else
+      if (toSearch.compareTo(p.data) == 0)
+      	return true;
+      else
+      if (toSearch.compareTo(p.data) < 0)
+         return search(p.left, toSearch);
+      else
+         return search(p.right, toSearch);
+    }
 	
-	private T findMax(Node<T> root)
-	{
-		while (root.right != null) {
-			root = root.right;
-		}
+	public void delete(T toDelete)
+    {
+      root = delete(root, toDelete);
+    }
+   private Node<T> delete(Node<T> p, T toDelete)
+    {
+      if (p == null)  throw new RuntimeException("cannot delete.");
+      else
+      if (toDelete.compareTo(p.data) < 0)
+      p.left = delete (p.left, toDelete);
+      else
+      if (toDelete.compareTo(p.data)  > 0)
+      p.right = delete (p.right, toDelete);
+      else
+      {
+         if (p.left == null) return p.right;
+         else
+         if (p.right == null) return p.left;
+         else
+         {
+         // get data from the rightmost node in the left subtree
+            p.data = retrieveData(p.left);
+         // delete the rightmost node in the left subtree
+            p.left =  delete(p.left, p.data) ;
+         }
+      }
+      return p;
+    }
+   private T retrieveData(Node<T> p)
+    {
+      while (p.right != null) p = p.right;
 
-		return root.data;
-	}
+      return p.data;
+    }
 	
-	public boolean contains(T data)
-	{
-		return contains(root, data);
-	}
-	// We iterate to the right location and if the if statements dont run 
-	// we know the node we are at is the right node
-	private boolean contains(Node<T> root, T data)
-	{
-		if (root == null)
-		{
-			return false;
-		}
-		else if (data.compareTo(root.data) < 0)
-		{
-			return contains(root.left, data);
-		}
-		else if (data.compareTo(root.data) > 0)
-		{
-			return contains(root.right, data);
-		}
-		else
-		{
-			return true;
-		}
-	}
 	
 }
 

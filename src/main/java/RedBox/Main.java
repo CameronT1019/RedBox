@@ -14,6 +14,12 @@ public class Main
     {
         
         tree = InventoryOperations.readInventory();
+
+        Movie movieToDelete = new Movie();
+        movieToDelete.setTitle("Passengers");
+
+        tree.delete(movieToDelete);
+        System.out.println("deleted");
         
     }
 }
