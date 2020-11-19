@@ -12,29 +12,20 @@ public class BinaryTree<T extends Comparable<T>> {
 	}
 	
 	// We go to the appropriate node to insert our new node 
-	private Node<T> insert(Node<T> root, T data)
+	private Node<T> insert(Node<T> p, T data)
 	{
-		if (root == null)
-		{
-			return new Node<>(data);
-		}
-		else if (data.compareTo(root.data)< 0)
-		{
-			root.left = insert(root.left, data);
-		}
-		else if (data.compareTo(root.data) > 0)
-		{
-			root.right = insert(root.right, data);
-		}
+		if (p == null)
+			return new Node<T>(data);
+		
+		if (data.compareTo(p.data) == 0) 
+			return p;
+		
+		if (data.compareTo(p.data) < 0)
+			p.left = insert(p.left, data);
 		else
-		{
-			// Stylistically, I have this here to explicitly state that we are
-			// disallowing insertion of duplicate values. This is unconventional
-			// and a bit cheeky.
-			;
-		}
-
-		return root;
+			p.right = insert(p.right, data);
+		
+		return p;
 	}
 	
 	public void delete(T data)
