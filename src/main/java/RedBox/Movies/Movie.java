@@ -81,7 +81,7 @@ public class Movie implements Comparable<Movie> {
     
 	@Override
 	public int compareTo(Movie o) {
-		return this.getTitle().compareToIgnoreCase(o.getTitle());
+		return this.getTitle().trim().compareToIgnoreCase(o.getTitle().trim());
 	}
     
 }

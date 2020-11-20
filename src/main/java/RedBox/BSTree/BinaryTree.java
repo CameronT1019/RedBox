@@ -28,18 +28,18 @@ public class BinaryTree<T extends Comparable<T>> {
 		return p;
 	}
 	
-	public boolean search(T toSearch)
+	public Node<T> search(T toSearch)
    {
        return search(root, toSearch);
    }
    
-   private boolean search(Node<T> p, T toSearch)
+   private Node<T> search(Node<T> p, T toSearch)
    {
       if (p == null)
-         return false;
+         return null;
       else
       if (toSearch.compareTo(p.data) == 0)
-      	return true;
+      	return p;
       else
       if (toSearch.compareTo(p.data) < 0)
          return search(p.left, toSearch);
