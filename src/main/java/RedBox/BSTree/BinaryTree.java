@@ -1,88 +1,108 @@
 package RedBox.BSTree;
+
+
+public class BinaryTree<E extends Comparable<E>> {
     
-public class BinaryTree<T extends Comparable<T>> {
-    
-    // Declare the root node
-	private Node<T> root;
-	
-	
-	public void insert(T data)
-	{
-		root = insert(root, data);
-	}
-	
-	// We go to the appropriate node to insert our new node 
-	private Node<T> insert(Node<T> p, T data)
-	{
-		if (p == null)
-			return new Node<T>(data);
+   private Node<E> root;
 
-		if (data.compareTo(p.data) == 0)
-			return p;
-
-		if (data.compareTo(p.data) < 0)
-			p.left = insert(p.left, data);
-		else
-			p.right = insert(p.right, data);
-
-		return p;
-	}
-	
-	public Node<T> search(T toSearch)
-   {
-       return search(root, toSearch);
+   public BinaryTree () {
+      root = null;
    }
    
-   private Node<T> search(Node<T> p, T toSearch)
-   {
-      if (p == null)
-         return null;
-      else
-      if (toSearch.compareTo(p.data) == 0)
-      	return p;
-      else
-      if (toSearch.compareTo(p.data) < 0)
-         return search(p.left, toSearch);
-      else
-         return search(p.right, toSearch);
+   public void insert(E data) {
+       root = insert(root, data);
    }
-	
-	public void delete(T toDelete)
-   {
-       root = delete(root, toDelete);
-   }
-    
-   private Node<T> delete(Node<T> p, T toDelete)
-   {
-      if (p == null)
-         throw new RuntimeException("cannot delete.");
-      else if (toDelete.compareTo(p.data) < 0)
-         p.left = delete(p.left, toDelete);
-      else if (toDelete.compareTo(p.data) > 0)
-         p.right = delete(p.right, toDelete);
-      else {
-         if (p.left == null)
-            return p.right;
-         else if (p.right == null)
-            return p.left;
-         else {
-            // get data from the rightmost node in the left subtree
-            p.data = retrieveData(p.left);
-            // delete the rightmost node in the left subtree
-            p.left = delete(p.left, p.data);
-         }
-      }
-      return p;
-   }
-    
-   private T retrieveData(Node<T> p)
-   {
-      while (p.right != null) p = p.right;
+   
+   private Node<E> insert(Node<E> currentRoot, E data) {
 
-      return p.data;
+       // instantiate a new Node with data as data if the current root has not been previously instantiated
+       if (currentRoot == null) {
+           return new Node<E>(data);
+       }
+       // if the value of the data being searched for is less than the value of the current root node, then 
+       // traverse to the left node of the current root, setting the current left node to whatever gets returned
+       // from the insert method
+       else if (data.compareTo(currentRoot.data) < 0) {
+           root.left = insert(currentRoot.left, data);
+       }
+       // if the value of the data being searched for is less than the value of the current root node, then 
+       // traverse to the right node of the current root, setting the current right node to whatever gets returned
+       // from the insert method
+       else if (data.compareTo(currentRoot.data) > 0) {
+           root.right = insert(root.right, data);
+       } else {
+           // Stylistically, I have this here to explicitly state that we are
+           // disallowing insertion of duplicate values.
+           ;
+       }
+       return root;
    }
-	
-	
+   
+   public E search(E data) {
+       return searchHelper(root, data);
+   }
+
+   private E searchHelper(Node<E> currentNode, E newData) {
+       if (currentNode == null) {
+           return null;
+       }
+       if (currentNode.data.compareTo(newData) == 0) {
+           return (E) currentNode;
+       } else if (currentNode.data.compareTo(newData) < 0) {
+           return searchHelper(currentNode.right, newData);
+       } else {
+           return searchHelper(currentNode.left, newData);
+       }
+
+   }
+   
+   public boolean delete(E data) {
+       return deleteHelper(null, root, data);
+   }
+    
+   private boolean deleteHelper(Node<E> parent, Node<E> currentNode, E newData) {
+       if (currentNode == null) {
+           return false;
+       }
+       if (currentNode.data.compareTo(newData) == 0) {
+           if (currentNode.equals(root) && root.getLeft() == null && root.getRight() == null) {
+               root = null;
+               return true;
+           }
+           leftShifter(parent, currentNode);
+           return true;
+       }
+       else if (currentNode.data.compareTo(newData) < 0) {
+           return deleteHelper(currentNode, currentNode.getRight(), newData);
+       }
+       else {
+           return deleteHelper(currentNode, currentNode.getLeft(), newData);
+       }
+   }
+
+        
+   private void leftShifter(Node<E> parent, Node<E> currentNode) {
+       if (currentNode == null) {
+           return;
+       }
+        
+       if (currentNode.getLeft() == null) {
+           if (parent.getLeft() == null) {
+               parent.setLeft(null);
+           } else {
+               parent.setRight(null);
+           }
+           return;
+       }
+       
+       currentNode = currentNode.getLeft().clone();
+
+       if (currentNode.getLeft().getLeft() == null) {
+           currentNode.setLeft(null);
+           return;
+       }
+       leftShifter(currentNode, currentNode.getLeft());
+    }
 }
 
 

@@ -1,49 +1,57 @@
 package RedBox.BSTree;
 
-public class Node<T extends Comparable<T>>{
-	
+import RedBox.Movies.Movie;
 
-	T data;
-	Node<T> left, right;
+public class Node<E extends Comparable<E>> {
+    
+    protected E data;      // the information to be stored in the node
+    protected Node<E> left;   // the pointer to the node's left subtree
+    protected Node<E> right;  // the pointer to the node's right subtree
 
-    Node(T data, Node<T> l, Node<T> r) {
-        left = l;
-        right = r;
-        this.data = data;
+    // Constructors
+    public Node() {
+        left = null;
+        right = null;
     }
-    Node(T data)
-    {
-        left = right = null;
-		this.data = data;
-	}
 
+    Node(E element) {
+        this.data = element;
+        this.left = null;
+        this.right = null;
+    }
 
-    // *** methods ***
-
-    // accessors (access to fields)
-    public T getElement() {
+    // Overloaded Constructor
+    /* public Node (String title, Integer available, Integer rented) {
+        data = new Movie<>(title, available, rented);
+        left = null;
+        right = null;
+    }  */
+    
+    // Accessors
+    public E getData () {
         return data;
     }
 
-    public Node<T> getLeft() {
+    public Node<E> getLeft () {
         return left;
     }
-    
-    public Node<T> getRight() {
+
+    public Node<E> getRight () {
         return right;
     }
+
+    // Mutators
+    public void setData (E newData) {
+        this.data = newData;
+    }
+
+    public void setLeft (Node<E> newLeft) {
+        left = newLeft;
+    }
+
+    public void setRight(Node<E> newRight) {
+        right = newRight;
+    }
     
-    // mutators (change fields)
-    public void setElement(T newT) {
-        data = newT;
-    }
-
-    public void setLeft(Node<T> newL) {
-        left = newL;
-    }
-
-    public void setRight(Node<T> newR) {
-        right = newR;
-    }
+    
 }
-
