@@ -8,3 +8,10 @@ add "Arrival",4
 return "Passengers"
 rem43"Lilo and Stitch",2
 remove "Captain America: Civil War",2
+aDd "Kingdom Under Heaven", 2
+ReMove "The Departed", 2
+rent "Inception"
+retUrn "Kingdom Under Heaven"
+add "Straight Outta Compton", 3
+mod "Kill Bill", 1
+remove "The Lion King", 1

@@ -1,19 +1,28 @@
+// Cameron Testerman cxt200003 2021550951
 package RedBox.Movies;
 
 public class Movie implements Comparable<Movie> {
-    private String title;
-    Integer Available;
-    Integer Rented;
+    String title = "";
+    public Integer available = 0;
+    public Integer rented = 0;
 
-    public Movie(){
-        title = "";
-        Available = 0;
-        Rented = 0;
+    Movie() {}
+
+    public Movie(String title) {
+        this.title = title;
     }
+    
     public Movie(String title, Integer available, Integer rented) {
         this.title = title;
-        Available = available;
-        Rented = rented;
+        this.available = available;
+        this.rented = rented;
+    }
+
+    //overloaded constructor for adding and removing
+    public Movie(String title, Integer avail)
+    {
+        this.title = title;
+        available = avail;
     }
 
     public String getTitle() {
@@ -25,23 +34,55 @@ public class Movie implements Comparable<Movie> {
     }
 
     public Integer getAvailable() {
-        return Available;
+        return available;
     }
 
     public void setAvailable(Integer available) {
-        Available = available;
+        this.available = available;
     }
 
     public Integer getRented() {
-        return Rented;
+        return rented;
     }
 
     public void setRented(Integer rented) {
-        Rented = rented;
+        this.rented = rented;
     }
 
-    public int compareTo(Movie m) {
-        return this.getTitle().trim().compareToIgnoreCase(m.getTitle().trim());
+    @Override
+    public int compareTo(Movie m)
+    {
+        int val = 0;
+        val = title.compareTo(m.title);
+        return val;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return String.format("%-33s%-8d%-8d", title, available, rented);
+    }
+    
+    public void add(int num)
+    {
+       available += num;
+    }
+    
+    public void remove(int num)
+    {
+       available -= num;
+    }
+    
+    public void rent()
+    {
+       rented++;
+       available--;
+    }
+
+    public void returned()
+    {
+       rented--;
+       available++;
     }
     
 }

@@ -1,107 +1,185 @@
+// Cameron Testerman cxt200003 2021550951
 package RedBox.BSTree;
 
+import java.io.PrintWriter;
 
 public class BinaryTree<E extends Comparable<E>> {
     
-   private Node<E> root;
-
-   public BinaryTree () {
-      root = null;
-   }
+   Node<E> root = null;
    
    public void insert(E data) {
-       root = insert(root, data);
+       Node<E> newNode = new Node(data);
+       Node<E> current = root;
+       insert(newNode, current);
    }
    
-   private Node<E> insert(Node<E> currentRoot, E data) {
-
-       // instantiate a new Node with data as data if the current root has not been previously instantiated
-       if (currentRoot == null) {
-           return new Node<E>(data);
-       }
-       // if the value of the data being searched for is less than the value of the current root node, then 
-       // traverse to the left node of the current root, setting the current left node to whatever gets returned
-       // from the insert method
-       else if (data.compareTo(currentRoot.data) < 0) {
-           root.left = insert(currentRoot.left, data);
-       }
-       // if the value of the data being searched for is less than the value of the current root node, then 
-       // traverse to the right node of the current root, setting the current right node to whatever gets returned
-       // from the insert method
-       else if (data.compareTo(currentRoot.data) > 0) {
-           root.right = insert(root.right, data);
-       } else {
-           // Stylistically, I have this here to explicitly state that we are
-           // disallowing insertion of duplicate values.
-           ;
-       }
-       return root;
-   }
+   public void insert(Node newNode, Node current)
+    {
+        if(root == null)
+        {
+            root = newNode;
+        }
+        else
+        {
+            //if the number is negative, it goes to the left
+            if(newNode.compareTo(current) < 0)
+            {
+                if(current.left == null)
+                {
+                    current.left = newNode;
+                }
+                else
+                {
+                    insert(newNode, current.left);
+                }
+            }
+            
+            //if the number is positive, it goes to the right
+            else if(newNode.compareTo(current) > 0)
+            {
+                if(current.right == null)
+                {
+                    current.right = newNode;
+                }
+                else
+                {
+                    insert(newNode, current.right);
+                }
+            }
+        }
+    }
    
-   public E search(E data) {
-       return searchHelper(root, data);
-   }
-
-   private E searchHelper(Node<E> currentNode, E newData) {
-       if (currentNode == null) {
-           return null;
-       }
-       if (currentNode.data.compareTo(newData) == 0) {
-           return (E) currentNode;
-       } else if (currentNode.data.compareTo(newData) < 0) {
-           return searchHelper(currentNode.right, newData);
-       } else {
-           return searchHelper(currentNode.left, newData);
-       }
-
-   }
-   
-   public boolean delete(E data) {
-       return deleteHelper(null, root, data);
-   }
+   public E search(E data)
+    {
+        Node<E> newNode = new Node(data);
+        return searchHelper(root, newNode);
+    }
     
-   private boolean deleteHelper(Node<E> parent, Node<E> currentNode, E newData) {
-       if (currentNode == null) {
-           return false;
-       }
-       if (currentNode.data.compareTo(newData) == 0) {
-           if (currentNode.equals(root) && root.getLeft() == null && root.getRight() == null) {
-               root = null;
-               return true;
-           }
-           leftShifter(parent, currentNode);
-           return true;
-       }
-       else if (currentNode.data.compareTo(newData) < 0) {
-           return deleteHelper(currentNode, currentNode.getRight(), newData);
-       }
-       else {
-           return deleteHelper(currentNode, currentNode.getLeft(), newData);
-       }
-   }
-
+    public E searchHelper(Node<E> currentNode, Node<E> newNode)
+    {
+        if(currentNode == null)
+            return null;
+        else if(newNode.compareTo(currentNode) < 0)
+        {
+            return (E)searchHelper(currentNode.left, newNode);
+        }
+        else if(newNode.compareTo(currentNode) > 0)
+        {
+            return (E)searchHelper(currentNode.right, newNode);
+        }
+        else if(newNode.compareTo(currentNode) == 0)
+        {
+            return currentNode.data;
+        }
         
-   private void leftShifter(Node<E> parent, Node<E> currentNode) {
-       if (currentNode == null) {
-           return;
-       }
-        
-       if (currentNode.getLeft() == null) {
-           if (parent.getLeft() == null) {
-               parent.setLeft(null);
-           } else {
-               parent.setRight(null);
-           }
-           return;
-       }
+        return null;
+    }
+   
+   public E delete(E data)
+    {
+        Node<E> parent = null;
+        Node<E> currentNode = root;
        
-       currentNode = currentNode.getLeft().clone();
+        while(currentNode != null && data.compareTo(currentNode.data) != 0)
+        {
+            parent = currentNode;
+            if(data.compareTo(currentNode.data) < 0)
+            {
+            	currentNode = currentNode.left;
+            }
+            else
+            {
+            	currentNode = currentNode.right;
+            }
+        }
+        
+        if(currentNode != null)
+        {
+            if(currentNode.left == null && currentNode.right == null)
+            {
+                if(parent == null)
+                {
+                    root = null;
+                }
+                else if(currentNode.compareTo(parent) > 0)
+                {
+                	parent.right = null;
+                }
+                else
+                {
+                	parent.left = null;
+                }
+            }
+            else if(currentNode.left == null ^ currentNode.right == null)
+            {
+                if(currentNode.left == null)
+                {
+                    //if the node we were looking for was the root
+                    if(parent == null)
+                    {
+                        root = currentNode.right;
+                    }
+                    else if(currentNode.compareTo(parent) > 0)
+                    {
+                        parent.right = currentNode.right;
+                    }
+                    else
+                    {
+                        parent.left = currentNode.right;
+                    }
+                }
+                else
+                {
+                    if(parent == null)
+                    {
+                        root = currentNode.left;
+                    }
+                    else if(currentNode.compareTo(parent) > 0)
+                    {
+                        parent.right = currentNode.left;
+                    }
+                    else
+                    {
+                        parent.left = currentNode.left;
+                    }
+                }
+            }
+            else
+            {
+                parent = currentNode;
+                currentNode = currentNode.left;
+                
+                while(currentNode.right != null)
+                {
+                	currentNode = currentNode.right;
+                }
+                parent.data = delete(currentNode.data);
+            }
+        }
+        
+        return currentNode.data;
+    }
 
-       if (currentNode.getLeft().getLeft() == null) {
-           currentNode.setLeft(null);
-           return;
-       }
-       leftShifter(currentNode, currentNode.getLeft());
+        
+   public String printTree(PrintWriter pw)
+    {
+        String line = "";
+        line += printTree(root, line, pw);
+        return line;
+    }
+    
+    public String printTree(Node<E> node, String bstree, PrintWriter pw)
+    {
+        if(node == null)
+        {
+            return "";
+        }
+        printTree(node.left, bstree, pw);
+        bstree = node.data.toString() + '\n';
+        pw.print(bstree);
+        printTree(node.right, bstree, pw);
+        
+        return bstree;
     }
 }
 

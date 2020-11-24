@@ -1,42 +1,35 @@
+// Cameron Testerman cxt200003 2021550951
 package RedBox.BSTree;
 
-import RedBox.Movies.Movie;
 
 public class Node<E extends Comparable<E>> {
     
-    protected E data;      // the information to be stored in the node
-    protected Node<E> left;   // the pointer to the node's left subtree
-    protected Node<E> right;  // the pointer to the node's right subtree
+    E data;      // the information to be stored in the node
+    Node left = null;   // the pointer to the node's left subtree
+    Node right = null;  // the pointer to the node's right subtree
 
     // Constructors
-    public Node() {
-        left = null;
-        right = null;
+    Node(E data, Node left, Node right) {
+        this.data = data;
+        this.left = left;
+        this.right = right;
     }
 
     Node(E element) {
         this.data = element;
-        this.left = null;
-        this.right = null;
     }
 
-    // Overloaded Constructor
-    /* public Node (String title, Integer available, Integer rented) {
-        data = new Movie<>(title, available, rented);
-        left = null;
-        right = null;
-    }  */
     
     // Accessors
     public E getData () {
         return data;
     }
 
-    public Node<E> getLeft () {
+    public Node getLeft () {
         return left;
     }
 
-    public Node<E> getRight () {
+    public Node getRight () {
         return right;
     }
 
@@ -45,13 +38,19 @@ public class Node<E extends Comparable<E>> {
         this.data = newData;
     }
 
-    public void setLeft (Node<E> newLeft) {
+    public void setLeft (Node newLeft) {
         left = newLeft;
     }
 
-    public void setRight(Node<E> newRight) {
+    public void setRight(Node newRight) {
         right = newRight;
     }
     
+    public int compareTo(Node<E> newNode)
+    {
+        int i = 0;
+        i = data.compareTo(newNode.data);
+        return i;
+    }
     
 }
